@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#172554">
+<title>말로 주문 | 배리어프리 키오스크</title>
+<style>
+:root{--navy:#172554;--blue:#1d4ed8;--yellow:#fee500;--green:#15803d;--red:#dc2626;--ink:#172033;--muted:#64748b;--paper:#f8fafc;--line:#dbe3ee;--pink:#ec4899}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;color:var(--ink);background:#eef2f7}button{font:inherit;cursor:pointer;border:0;border-radius:18px;font-weight:800}button:focus-visible{outline:5px solid #f59e0b;outline-offset:3px}.hidden{display:none!important}
+header{background:var(--navy);color:white;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;gap:12px}header strong{font-size:clamp(20px,3vw,30px)}header small{font-size:14px;color:#dbeafe}
+main{max-width:1200px;margin:0 auto;padding:24px}.home{min-height:80vh;display:grid;place-items:center}.home-card{background:white;padding:clamp(24px,5vw,56px);border-radius:30px;max-width:760px;width:100%;text-align:center;box-shadow:0 12px 40px #0f172a12}.home h1{font-size:clamp(32px,5vw,54px);margin:0 0 12px}.home p{font-size:22px;line-height:1.6;color:var(--muted)}.choice{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:28px}.primary,.secondary,.yellow,.green,.danger{padding:20px 26px;font-size:22px}.primary{background:var(--blue);color:white}.secondary{background:#e2e8f0;color:var(--ink)}.yellow{background:var(--yellow);color:#332b00}.green{background:var(--green);color:white}.danger{background:#fee2e2;color:#991b1b}
+.layout{display:grid;grid-template-columns:minmax(280px,1fr) minmax(320px,1.15fr);gap:22px;align-items:start}.panel{background:white;border-radius:24px;padding:24px;box-shadow:0 8px 28px #0f172a0d}.panel h2{font-size:clamp(24px,3vw,34px);margin:0 0 16px}.status{display:inline-flex;align-items:center;gap:9px;border-radius:999px;padding:10px 16px;background:#fee2e2;color:var(--red);font-size:18px;font-weight:900}.status.on{background:#dcfce7;color:var(--green)}.dot{width:12px;height:12px;border-radius:50%;background:currentColor}
+.qr-wrap{display:grid;place-items:center;background:#f8fafc;border:2px dashed #cbd5e1;border-radius:20px;padding:20px;margin:18px 0}.qr-wrap img{width:min(270px,70vw);height:auto;image-rendering:pixelated}.hint{font-size:18px;line-height:1.55;color:var(--muted)}.cart-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 0;border-bottom:1px solid var(--line);font-size:22px}.cart-row small{display:block;color:var(--muted);font-size:16px;margin-top:4px}.total{display:flex;justify-content:space-between;font-size:clamp(26px,4vw,38px);font-weight:950;color:#be123c;padding:22px 0}.empty{padding:44px 12px;text-align:center;color:var(--muted);font-size:22px}.mobile-shell{max-width:650px;margin:0 auto}.mobile-panel{padding:clamp(20px,4vw,34px)}.mobile-title{font-size:clamp(30px,5vw,42px);margin:4px 0 8px}.mobile-sub{font-size:20px;color:var(--muted);line-height:1.5}.connect-btn{width:100%;background:var(--yellow);color:#302800;padding:24px 14px;font-size:clamp(23px,4vw,30px);margin:20px 0}.mic-btn{width:100%;background:var(--blue);color:white;padding:28px 12px;font-size:clamp(24px,4vw,32px);margin:14px 0}.mic-btn.listening{background:#b91c1c;animation:pulse 1.2s infinite}.pay-btn{width:100%;background:var(--pink);color:white;padding:22px 12px;font-size:26px;margin-top:16px}.sub-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}.sub-actions button{padding:16px 10px;font-size:18px;background:#e2e8f0;color:#1e293b}.transcript{padding:18px;background:#f1f5f9;border-radius:16px;font-size:20px;line-height:1.5;min-height:64px;margin:14px 0}.feedback{font-size:19px;line-height:1.5;padding:16px;border-radius:16px;background:#eff6ff;margin-top:14px}.feedback.error{background:#fef2f2;color:#991b1b}.feedback.success{background:#f0fdf4;color:#166534}.manual{margin-top:22px;border-top:1px solid var(--line);padding-top:18px}.manual label{font-size:18px;font-weight:800;display:block;margin-bottom:10px}.manual select,.manual input{width:100%;font-size:20px;padding:15px;border:2px solid #cbd5e1;border-radius:14px;margin-bottom:10px;background:white}.manual button{width:100%;padding:16px;background:#334155;color:white;font-size:19px}.kiosk-pay{background:#fff7ed;border:3px solid #fdba74;border-radius:22px;padding:28px;text-align:center}.kiosk-pay h2{font-size:38px}.kiosk-pay .amount{font-size:clamp(38px,7vw,64px);font-weight:950;color:#db2777}.kiosk-pay p{font-size:24px;line-height:1.5}.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#172554;color:white;padding:14px 22px;border-radius:14px;font-size:18px;box-shadow:0 8px 24px #0003;z-index:5;max-width:90vw;text-align:center}
+@keyframes pulse{50%{transform:scale(.985);opacity:.85}}
+@media(max-width:800px){.layout{grid-template-columns:1fr}main{padding:14px}header{padding:14px 16px}.panel{padding:20px}}
+</style>
+</head>
+<body>
+<header><strong>말로 주문</strong><small>어르신을 위한 배리어프리 키오스크</small></header>
+<main>
+<section id="home" class="home">
+ <div class="home-card">
+  <h1>말씀만 하시면 주문할 수 있어요</h1>
+  <p>스마트폰으로 키오스크에 연결하고<br>편하게 말해서 주문해 보세요.</p>
+  <div class="choice">
+   <button class="primary" onclick="openKiosk()">키오스크 화면 열기</button>
+   <button class="yellow" onclick="openMobile()">휴대폰 주문 화면 열기</button>
+  </div>
+  <p class="hint">두 화면을 같은 브라우저에서 각각 열면 연결과 주문 동기화를 체험할 수 있습니다.</p>
+ </div>
+</section>
+
+<section id="kiosk" class="hidden">
+ <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px">
+  <div><h1 style="font-size:clamp(30px,4vw,44px);margin:0">주문 도우미 키오스크</h1><div class="hint">휴대폰으로 QR 코드를 찍어 연결해 주세요.</div></div>
+  <button class="secondary" onclick="goHome()">처음 화면</button>
+ </div>
+ <div class="layout">
+  <section class="panel">
+   <h2>① 휴대폰 연결</h2>
+   <div id="kStatus" class="status"><span class="dot"></span>연동 안됨</div>
+   <div class="qr-wrap"><img id="qr" alt="휴대폰 연결 QR 코드"><div id="qrFallback" class="hint hidden">QR 코드 생성에 실패했습니다. 아래 주소를 휴대폰에서 열어주세요.</div></div>
+   <p class="hint" style="text-align:center">휴대폰 카메라로 QR 코드를 찍고<br><b>노란색 연결 버튼</b>을 눌러주세요.</p>
+   <div id="kioskMessage" class="feedback">휴대폰 연결을 기다리고 있습니다.</div>
+  </section>
+  <section class="panel">
+   <h2>② 주문 내역</h2>
+   <div id="kCart"><div class="empty">아직 담긴 메뉴가 없습니다.</div></div>
+   <div class="total"><span>합계</span><span id="kTotal">0원</span></div>
+   <div id="kPay" class="kiosk-pay hidden">
+    <h2>결제해 주세요</h2><div class="amount" id="kPayTotal">0원</div>
+    <p>아래 IC 카드리더기에<br><b>카드를 넣어주세요.</b></p>
+    <button class="green" onclick="finishPayment()">결제 완료 (시뮬레이션)</button>
+   </div>
+  </section>
+ </div>
+</section>
+
+<section id="mobile" class="hidden mobile-shell">
+ <section class="panel mobile-panel">
+  <button class="secondary" onclick="goHome()" style="padding:12px 16px;font-size:17px">처음 화면</button>
+  <h1 class="mobile-title">휴대폰으로 편하게 주문하세요</h1>
+  <p class="mobile-sub">화면을 천천히 보시고, 큰 버튼을 눌러주세요.</p>
+  <div id="mStatus" class="status"><span class="dot"></span>연동 안됨</div>
+  <button id="connectBtn" class="connect-btn" onclick="connectMobile()">🔗 키오스크 연결하기</button>
+  <div id="mobileControls" class="hidden">
+   <button id="micBtn" class="mic-btn" onclick="toggleSpeech()">🎤 누르고 말씀하세요</button>
+   <div class="transcript" id="transcript">말씀하신 내용이 여기에 표시됩니다.</div>
+   <div class="sub-actions">
+    <button onclick="repeatLast()">🔊 다시 듣기</button>
+    <button onclick="startSpeech()">🎤 다시 말하기</button>
+   </div>
+   <div id="feedback" class="feedback">예: “따뜻한 아메리카노 한 잔 줘”</div>
+   <div class="manual">
+    <label for="menuSelect">음성 인식이 어려우시면 메뉴를 선택해 주세요.</label>
+    <select id="menuSelect">
+     <option value="아메리카노">아메리카노 · 4,000원</option>
+     <option value="카페라떼">카페라떼 · 4,500원</option>
+     <option value="바닐라라떼">바닐라라떼 · 5,000원</option>
+     <option value="녹차">녹차 · 4,000원</option>
+     <option value="아이스티">아이스티 · 4,000원</option>
+    </select>
+    <input id="qty" type="number" min="1" max="10" value="1" aria-label="수량">
+    <button onclick="addManual()">선택한 메뉴 담기</button>
+   </div>
+   <button id="payBtn" class="pay-btn" onclick="requestPayment()">💳 결제하기</button>
+  </div>
+  <div id="mPayWait" class="feedback hidden success">키오스크 화면에서 카드를 넣어주세요!</div>
+ </section>
+</section>
+</main>
+<div id="toast" class="toast hidden" role="status"></div>
+<script>
+const MENU={"아메리카노":4000,"카페라떼":4500,"바닐라라떼":5000,"녹차":4000,"아이스티":4000};
+let sessionId=new URLSearchParams(location.search).get("session")||("KS"+Math.random().toString(36).slice(2,9).toUpperCase());
+let channel=null,cart=[],connected=false,listening=false,lastSpoken="",recognition=null;
+const $=id=>document.getElementById(id);
+function money(n){return n.toLocaleString("ko-KR")+"원"}
+function total(){return cart.reduce((s,x)=>s+x.price*x.qty,0)}
+function send(type,data={}){const msg={type,data,sessionId,at:Date.now()};if(channel)channel.postMessage(msg);try{localStorage.setItem("kiosk-event-"+sessionId,JSON.stringify(msg))}catch(e){}}
+function initChannel(){try{channel=new BroadcastChannel("kiosk-"+sessionId);channel.onmessage=e=>receive(e.data)}catch(e){}window.addEventListener("storage",e=>{if(e.key==="kiosk-event-"+sessionId&&e.newValue){try{receive(JSON.parse(e.newValue))}catch(_){}}})}
+function receive(m){if(!m||m.sessionId!==sessionId)return;switch(m.type){
+ case "connected":setConnected(true);break;
+ case "add":addItem(m.data.name,m.data.qty||1,false);break;
+ case "payment":showKioskPayment();break;
+ case "paymentDone":cart=[];renderCart();$("kPay").classList.add("hidden");$("kioskMessage").textContent="결제가 완료되었습니다. 주문해 주셔서 감사합니다.";break;
+ case "error":toast(m.data.message||"오류가 발생했습니다.");break;
+ }}
+function setConnected(v){connected=v;["kStatus","mStatus"].forEach(id=>{if($(id)){$(id).classList.toggle("on",v);$(id).innerHTML='<span class="dot"></span>'+(v?"연동 완료":"연동 안됨")}});if($("kioskMessage"))$("kioskMessage").textContent=v?"휴대폰과 연결되었습니다. 주문을 시작해 주세요.":"휴대폰 연결을 기다리고 있습니다.";if($("mobileControls"))$("mobileControls").classList.toggle("hidden",!v);if($("connectBtn"))$("connectBtn").classList.toggle("hidden",v)}
+function renderCart(){const host=$("kCart");if(!host)return;if(!cart.length){host.innerHTML='<div class="empty">아직 담긴 메뉴가 없습니다.</div>'}else{host.innerHTML=cart.map((x,i)=>`<div class="cart-row"><div><b>${x.name}</b><small>${money(x.price)} · ${x.qty}잔</small></div><b>${money(x.price*x.qty)}</b></div>`).join("")}$("kTotal").textContent=money(total());$("kPayTotal").textContent=money(total())}
+function addItem(name,qty=1,announce=true){if(!MENU[name]){if(announce)showFeedback("해당 메뉴는 매장에 없습니다.","error");return}let item=cart.find(x=>x.name===name);if(item)item.qty+=qty;else cart.push({name,qty,price:MENU[name]});renderCart();if(announce){const msg=`${name} ${qty}잔을 담았습니다. 합계는 ${money(total())}입니다.`;showFeedback(msg,"success");speak(msg)}}
+function showFeedback(msg,type=""){if($("feedback")){$("feedback").textContent=msg;$("feedback").className="feedback "+type}}
+function speak(msg){lastSpoken=msg;if(!("speechSynthesis"in window))return;window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(msg);u.lang="ko-KR";u.rate=.9;window.speechSynthesis.speak(u)}
+function repeatLast(){if(lastSpoken)speak(lastSpoken);else speak("메뉴를 말씀해 주세요.")}
+function connectMobile(){if(!new URLSearchParams(location.search).get("session")){toast("키오스크 QR 코드로 접속해 주세요.");return}setConnected(true);send("connected");speak("키오스크와 연결되었습니다. 주문하실 메뉴를 말씀해 주세요.");showFeedback("키오스크와 연결되었습니다. 편하게 말씀해 주세요.","success")}
+function parseOrder(text){const t=text.replace(/\s/g,"");if(/결제|주문끝|계산/.test(t)){requestPayment();return}
+ let name=Object.keys(MENU).find(n=>t.includes(n.replace("아메리카노","아메리카노"))||t.includes(n));if(!name&&/아메|커피/.test(t))name="아메리카노";if(!name&&/라떼/.test(t))name="카페라떼";if(!name){showFeedback("음성을 잘 듣지 못했어요. 메뉴 이름을 다시 말씀해주세요.","error");speak("음성을 잘 듣지 못했어요. 다시 말씀해주세요.");return}
+ const match=t.match(/(열|여|두|세|네|다섯|한|하나|1|2|3|4|5)잔?/);const nums={"한":1,"하나":1,"두":2,"열":10,"여":10,"세":3,"네":4,"다섯":5};let qty=match?(nums[match[1]]||parseInt(match[1])||1):1;addItem(name,qty);send("add",{name,qty});$("transcript").textContent="인식한 내용: "+text}
+function speechSetup(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR)return null;const r=new SR();r.lang="ko-KR";r.interimResults=true;r.continuous=false;r.onstart=()=>{listening=true;$("micBtn").classList.add("listening");$("micBtn").textContent="🔴 듣고 있습니다… 말씀해 주세요";$("transcript").textContent="말씀을 듣고 있습니다…"};r.onresult=e=>{let final="",interim="";for(let i=e.resultIndex;i<e.results.length;i++){if(e.results[i].isFinal)final+=e.results[i][0].transcript;else interim+=e.results[i][0].transcript}$("transcript").textContent="인식 중: "+(final||interim);if(final)parseOrder(final)};r.onerror=e=>{showFeedback(e.error==="not-allowed"?"마이크 권한을 허용해 주세요.":"음성을 잘 듣지 못했어요. 다시 말씀해주세요.","error")};r.onend=()=>{listening=false;$("micBtn").classList.remove("listening");$("micBtn").textContent="🎤 누르고 말씀하세요"};return r}
+function startSpeech(){if(!connected){showFeedback("먼저 키오스크와 연결해 주세요.","error");return}if(!recognition)recognition=speechSetup();if(!recognition){showFeedback("이 브라우저는 음성 인식을 지원하지 않습니다. 아래 메뉴 선택 기능을 이용해 주세요.","error");return}try{recognition.start()}catch(e){}}
+function toggleSpeech(){if(listening){recognition.stop()}else startSpeech()}
+function addManual(){const name=$("menuSelect").value,qty=Math.max(1,Math.min(10,parseInt($("qty").value)||1));addItem(name,qty);send("add",{name,qty});$("transcript").textContent=`직접 선택: ${name} ${qty}잔`}
+function requestPayment(){if(!connected){showFeedback("먼저 키오스크와 연결해 주세요.","error");return}if(!cart.length){showFeedback("장바구니가 비어 있습니다. 메뉴를 먼저 담아주세요.","error");speak("장바구니가 비어 있습니다.");return}send("payment");$("mobileControls").classList.add("hidden");$("mPayWait").classList.remove("hidden");speak("키오스크 화면에서 카드를 넣어주세요.")}
+function showKioskPayment(){$("kPay").classList.remove("hidden");$("kioskMessage").textContent="결제 화면으로 전환되었습니다. 카드리더기에 카드를 넣어주세요."}
+function finishPayment(){send("paymentDone");cart=[];renderCart();$("kPay").classList.add("hidden");$("kioskMessage").textContent="결제가 완료되었습니다. 주문해 주셔서 감사합니다.";toast("결제가 완료되었습니다. (체험용)");}
+function toast(msg){$("toast").textContent=msg;$("toast").classList.remove("hidden");setTimeout(()=>$("toast").classList.add("hidden"),2800)}
+function openKiosk(){location.href=location.pathname+"?mode=kiosk&session="+sessionId}
+function openMobile(){location.href=location.pathname+"?mode=mobile&session="+sessionId}
+function goHome(){location.href=location.pathname}
+function boot(){const p=new URLSearchParams(location.search),mode=p.get("mode");if(mode==="kiosk"){$("kiosk").classList.remove("hidden");initChannel();const mobileUrl=location.origin+location.pathname+"?mode=mobile&session="+sessionId;$("qr").src="https://api.qrserver.com/v1/create-qr-code/?size=320x320&data="+encodeURIComponent(mobileUrl);$("qr").onerror=()=>{$("qr").classList.add("hidden");$("qrFallback").classList.remove("hidden")};renderCart()}
+ else if(mode==="mobile"){$("mobile").classList.remove("hidden");initChannel();if(!p.get("session"))$("connectBtn").disabled=true}
+}
+boot();
+</script>
+</body>
+</html>
